@@ -1,0 +1,11 @@
+streamlit
+pandas
+numpy<2 # Crucial for compatibility, as discussed
+emoji
+matplotlib
+wordcloud
+nltk
+Pillow
+regex
+plotly
+matplotlib-inline # Often used implicitly with matplotlib in environments like notebooks
