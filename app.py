@@ -25,9 +25,11 @@ if sys.stdout.encoding != 'utf-8':
 # Download VADER lexicon if not already downloaded
 # Streamlit will run this once per session, but NLTK handles idempotency.
 try:
+    # Attempt to find the resource
     nltk.data.find('sentiment/vader_lexicon.zip')
-except nltk.downloader.DownloadError:
-    st.info("Just a moment! We're downloading some language data for sentiment analysis. This only happens once. �")
+# Catch LookupError, which is the base class for resource not found errors
+except LookupError:
+    st.info("Just a moment! We're downloading some language data for sentiment analysis. This only happens once. 🚀")
     nltk.download('vader_lexicon')
 
 # Initialize VADER sentiment analyzer
@@ -323,10 +325,9 @@ def display_user_activity(df_cleaned):
             stopwords = set(STOPWORDS)
             stopwords.update(["media", "omitted", "message", "link"])
             
-            # Use the globally detected font path
-            GLOBAL_FONT_PATH="C:/Windows/Fonts/arialn.ttf"
+            # Use the globally detected font path for individual author word cloud
             wordcloud_kwargs = {"stopwords": stopwords, "background_color": "white", "width": 800, "height": 400}
-            if GLOBAL_FONT_PATH:
+            if GLOBAL_FONT_PATH: # Only add font_path if it was successfully found
                 wordcloud_kwargs["font_path"] = GLOBAL_FONT_PATH
 
             wordcloud_author = WordCloud(**wordcloud_kwargs).generate(text_author)
@@ -365,7 +366,7 @@ def display_word_clouds(df_with_sentiment):
     stopwords = set(STOPWORDS)
     stopwords.update(["media", "omitted", "message", "link"]) # Add common WhatsApp chat words
 
-    # Use the globally detected font path
+    # Use the globally detected font path for all word clouds in this function
     base_wordcloud_kwargs = {"stopwords": stopwords, "background_color": "white", "width": 800, "height": 400}
     if GLOBAL_FONT_PATH: # Only add font_path if it was successfully found
         base_wordcloud_kwargs["font_path"] = GLOBAL_FONT_PATH
@@ -414,7 +415,7 @@ def display_word_clouds(df_with_sentiment):
 # --- Streamlit App Layout ---
 st.set_page_config(layout="wide", page_title="WhatsApp Chat Analyzer")
 
-st.title("Your WhatsApp Convo, Uncovered! 🕵️‍♀️💬")
+st.title("Your WhatsApp Chat, Uncovered! 🕵️‍♀️�")
 st.markdown("Upload your chat export (.txt file) to explore its sentiment, activity, and hidden patterns. Let's dive in!")
 
 with st.expander("🤔 How to export your WhatsApp chat?"):
@@ -450,7 +451,7 @@ if uploaded_file is not None:
             all_emojis_total.extend([c for c in message if c in emoji.EMOJI_DATA])
         emojis_count = len(all_emojis_total)
 
-    st.sidebar.header("Choose Your Analysis 🗺️")
+    st.sidebar.header("Choose Your Journey 🗺️")
     analysis_method = st.sidebar.radio(
         "What would you like to explore?",
         ("Overview", "Sentiment Analysis", "User Activity", "Emoji Analysis", "Word Clouds")
@@ -520,3 +521,4 @@ else:
 
 st.markdown("---")
 st.markdown("Made with ❤️ by your friend Saigovardhan.")
+�
