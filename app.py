@@ -521,4 +521,4 @@ else:
 
 st.markdown("---")
 st.markdown("Made with ❤️ by your friend Saigovardhan.")
-�
+
